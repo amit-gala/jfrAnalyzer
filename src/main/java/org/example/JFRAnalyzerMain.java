@@ -1,6 +1,7 @@
 package org.example;
 
 import jdk.jfr.consumer.*;
+import org.example.jfr.views.MemoryLeakCandidate;
 import org.example.models.Methods;
 
 import java.io.IOException;
@@ -15,8 +16,12 @@ import java.util.stream.Collectors;
 public class JFRAnalyzerMain {
     public static void main(String[] args) throws IOException {
         System.out.println("Hello world!");
+        MemoryLeakCandidate memoryLeakCandidate = new MemoryLeakCandidate();
 
-        getHotMethods();
+//        getHotMethods();
+
+        memoryLeakCandidate.getMemoryLeakCandidateByClass();
+
 
 
     }
