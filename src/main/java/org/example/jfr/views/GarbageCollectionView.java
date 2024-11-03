@@ -1,5 +1,6 @@
 package org.example.jfr.views;
 
+import jdk.jfr.consumer.RecordedClass;
 import jdk.jfr.consumer.RecordedEvent;
 import jdk.jfr.consumer.RecordingFile;
 import lombok.Getter;
@@ -11,15 +12,17 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class GarbageCollectionView {
+    private long totalWeight;
+
     public void getGarbageCollectionInfo() throws IOException {
         try (
                 RecordingFile rec = new RecordingFile(Paths.get("C:\\Amit\\Projects\\memoryLeak\\JFR\\OOM.jfr"))) {
             Map<Long, GCInfo> gcInfoMap = new HashMap<>();
             Map<Instant, GCHeapConfiguration> gcHeapConfigurationMap = new HashMap<>();
+            Map<String, Long> gcAllocationByClassMap = new HashMap<>();
             String beforeOrAfter;
             long gcId;
             String gcType;
@@ -31,6 +34,9 @@ public class GarbageCollectionView {
             long initialSize;
             long minSize;
             long maxSize;
+
+            String classNmae;
+            long weight;
 
             while (rec.hasMoreEvents()) {
 
@@ -61,6 +67,14 @@ public class GarbageCollectionView {
                         }
                         break;
 
+                    case "jdk.ObjectAllocationSample":
+                        classNmae = ((RecordedClass) event.getValue("objectClass")).getName();
+                        weight = event.getLong("weight");
+                        long finalWeight = weight;
+                        totalWeight += weight;
+                        gcAllocationByClassMap.compute(classNmae, (k, v) -> v == null ? finalWeight : (v + finalWeight));
+                        break;
+
                     case "jdk.GCHeapConfiguration":
                         startTime = event.getStartTime();
                         initialSize = event.getLong("initialSize");
@@ -81,7 +95,7 @@ public class GarbageCollectionView {
 
             gcInfoMap.keySet().stream().map(gcInfoMap::get).forEach(gc -> {
                 System.out.printf("%12s\t%5d\t%5s\t%13d MB\t%13d MB\t%d ms\n",
-                        formatter.format(gc.getStartTime()), gc.getGcID(), gc.getGcType(), gc.getHeapBeforeGC()/(1024 * 1024), gc.getHeapAfterGC()/(1024 * 1024), gc.getLongestPause()/1_000_000);
+                        formatter.format(gc.getStartTime()), gc.getGcID(), gc.getGcType(), gc.getHeapBeforeGC() / (1024 * 1024), gc.getHeapAfterGC() / (1024 * 1024), gc.getLongestPause() / 1_000_000);
             });
 
 
@@ -93,7 +107,30 @@ public class GarbageCollectionView {
                             "\n" +
                             "Minimum Heap Size: %d MB\n" +
                             "\n" +
-                            "Maximum Heap Size: %d MB", g.getInitialSize()/(1024 * 1024), g.getMinSize()/(1024 * 1024), g.getMaxSize()/(1024 * 1024)));
+                            "Maximum Heap Size: %d MB", g.getInitialSize() / (1024 * 1024), g.getMinSize() / (1024 * 1024), g.getMaxSize() / (1024 * 1024)));
+
+
+            // ************** Allocation by class **************
+            // Create a list of Map.Entry pairs
+            List<Map.Entry<String, Long>> list = new LinkedList<>(gcAllocationByClassMap.entrySet());
+
+            // Sort the list based on values (descending order)
+            Collections.sort(list, (a, b) -> b.getValue().compareTo(a.getValue()));
+
+            // Create a LinkedHashMap to preserve the sorted order
+            LinkedHashMap<String, Long> sortedMap = new LinkedHashMap<>();
+            for (Map.Entry<String, Long> entry : list) {
+                sortedMap.put(entry.getKey(),
+                        entry.getValue());
+            }
+            System.out.println();
+            System.out.println();
+            System.out.println("Allocation by Class");
+            System.out.printf("%-70s %10s\n", "Class", "Weight");
+            sortedMap.keySet().stream().limit(10).forEach(k ->
+                    System.out.printf("%-70s %10d\n", k, gcAllocationByClassMap.get(k) * 100/ totalWeight)
+            );
+            // ************** Allocation by class **************
 
         }
 
@@ -194,5 +231,6 @@ public class GarbageCollectionView {
             return startTime;
         }
     }
+
 }
 

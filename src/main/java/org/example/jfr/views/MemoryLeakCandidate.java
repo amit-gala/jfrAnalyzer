@@ -45,7 +45,7 @@ public class MemoryLeakCandidate {
                         className = clazz.getName();
                         if (className != null && className.startsWith("[")) {
                             long arraySize = event.getLong("arrayElements");
-                            className = decodeDescriptors(className, arraySize > 0 ? Long.toString(arraySize) : "").get(0);
+                            className = decodeDescriptors(className, arraySize > 0 ? Long.toString(arraySize) : "").getFirst();
                         }
                     }
 
@@ -110,7 +110,7 @@ public class MemoryLeakCandidate {
         }
     }
 
-    List<String> decodeDescriptors(String descriptor, String arraySize) {
+    public static List<String> decodeDescriptors(String descriptor, String arraySize) {
         List<String> descriptors = new ArrayList<>();
         for (int index = 0; index < descriptor.length(); index++) {
             String arrayBrackets = "";
