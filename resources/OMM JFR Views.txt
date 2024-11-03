@@ -1,0 +1,696 @@
+PS C:\Amit\Projects\memoryLeak\JFR> jfr view --verbose gc-configuration  OOM.jfr
+
+GC Configuration
+----------------
+
+Young GC: G1New
+
+Old GC: G1Old
+
+Parallel GC Threads: 4
+
+Concurrent GC Threads: 1
+
+Dynamic GC Threads: true
+
+Concurrent Explicit GC: false
+
+Disable Explicit GC: false
+
+Pause Target: N/A
+
+GC Time Ratio: 12
+
+COLUMN 'Young GC', 'Old GC', 'Parallel GC Threads', 'Concurrent GC Threads',
+'Dynamic GC Threads', 'Concurrent Explicit GC', 'Disable Explicit GC',
+'Pause Target', 'GC Time Ratio' SELECT LAST(youngCollector), LAST(oldCollector),
+LAST(parallelGCThreads), LAST(concurrentGCThreads), LAST(usesDynamicGCThreads),
+LAST(isExplicitGCConcurrent), LAST(isExplicitGCDisabled), LAST(pauseTarget),
+LAST(gcTimeRatio) FROM GCConfiguration GROUP BY startTime
+
+
+
+
+
+
+
+
+
+PS C:\Amit\Projects\memoryLeak\JFR> jfr view --verbose gc  OOM.jfr
+
+                                  Garbage Collections
+
+Start        GC ID Type                     Heap Before GC Heap After GC  Longest Pause
+(startTime) (gcId) (eventType.label)            (heapUsed)    (heapUsed) (longestPause)
+----------- ------ ------------------------ -------------- ------------- --------------
+11:31:50        38 Young Garbage Collection         8.8 MB        6.6 MB        3.85 ms
+11:31:52        39 Young Garbage Collection         8.6 MB        6.9 MB        2.85 ms
+11:31:52        40 Old Garbage Collection           6.9 MB        6.9 MB        8.62 ms
+11:31:54        41 Young Garbage Collection         8.9 MB        7.1 MB        3.43 ms
+11:31:58        42 Young Garbage Collection        10.1 MB        6.8 MB        5.77 ms
+11:32:04        43 Young Garbage Collection        10.8 MB        6.7 MB        4.63 ms
+11:32:04        44 Old Garbage Collection           6.7 MB        6.7 MB        6.15 ms
+11:32:09        45 Young Garbage Collection        10.7 MB        6.9 MB        4.09 ms
+11:32:14        46 Young Garbage Collection        10.9 MB        6.8 MB        6.06 ms
+11:32:20        47 Young Garbage Collection        10.8 MB        6.7 MB        2.84 ms
+11:32:20        48 Old Garbage Collection           6.7 MB        6.7 MB        6.20 ms
+11:32:25        49 Young Garbage Collection        10.7 MB        6.8 MB        3.14 ms
+11:32:29        50 Young Garbage Collection        10.8 MB        6.7 MB        7.00 ms
+11:32:34        51 Young Garbage Collection         9.7 MB        6.7 MB        3.43 ms
+11:32:34        52 Old Garbage Collection           6.7 MB        6.7 MB        3.26 ms
+11:32:39        53 Young Garbage Collection        10.7 MB        7.0 MB        3.86 ms
+11:32:45        54 Young Garbage Collection        11.0 MB        7.1 MB        5.27 ms
+11:32:45        55 Old Garbage Collection           7.1 MB        7.1 MB        3.59 ms
+11:32:50        56 Young Garbage Collection        11.1 MB        7.2 MB        4.64 ms
+11:32:55        57 Young Garbage Collection        11.2 MB        7.2 MB        6.43 ms
+11:32:55        58 Old Garbage Collection           7.2 MB        7.2 MB        5.67 ms
+11:33:01        59 Young Garbage Collection        11.2 MB        7.2 MB        6.23 ms
+11:33:06        60 Young Garbage Collection        11.2 MB        7.3 MB        3.21 ms
+11:33:06        61 Old Garbage Collection           7.3 MB        7.3 MB        3.22 ms
+11:33:11        62 Young Garbage Collection        11.3 MB        7.3 MB        3.34 ms
+11:33:17        63 Young Garbage Collection        11.3 MB        7.3 MB        4.48 ms
+11:33:17        64 Old Garbage Collection           7.3 MB        7.3 MB        4.42 ms
+11:33:22        65 Young Garbage Collection        11.3 MB        7.5 MB        5.13 ms
+11:33:28        66 Young Garbage Collection        11.5 MB        7.5 MB        5.44 ms
+11:33:28        67 Old Garbage Collection           7.5 MB        7.5 MB        3.95 ms
+11:33:33        68 Young Garbage Collection        11.5 MB        7.5 MB        4.98 ms
+11:33:39        69 Young Garbage Collection        11.5 MB        7.5 MB        5.09 ms
+11:33:39        70 Old Garbage Collection           7.5 MB        7.5 MB        3.19 ms
+11:33:44        71 Young Garbage Collection        11.5 MB        7.6 MB        5.02 ms
+11:33:49        72 Young Garbage Collection        11.6 MB        7.5 MB        4.23 ms
+11:33:49        73 Old Garbage Collection           7.5 MB        7.5 MB        2.87 ms
+11:33:53        74 Young Garbage Collection        10.5 MB        7.6 MB        4.44 ms
+11:33:59        75 Young Garbage Collection        11.6 MB        7.6 MB        5.13 ms
+11:33:59        76 Old Garbage Collection           7.6 MB        7.6 MB        3.38 ms
+11:34:04        77 Young Garbage Collection        11.6 MB        7.7 MB        5.52 ms
+11:34:10        78 Young Garbage Collection        11.7 MB        7.8 MB        6.27 ms
+11:34:10        79 Old Garbage Collection           7.8 MB        7.8 MB        3.52 ms
+11:34:14        80 Young Garbage Collection        11.8 MB        7.8 MB        4.36 ms
+11:34:19        81 Young Garbage Collection        11.8 MB        7.8 MB        6.27 ms
+11:34:19        82 Old Garbage Collection           7.8 MB        7.8 MB        3.88 ms
+11:34:24        83 Young Garbage Collection        11.8 MB        8.2 MB        6.72 ms
+11:34:30        84 Young Garbage Collection        12.2 MB        7.9 MB        4.28 ms
+11:34:30        85 Old Garbage Collection           7.9 MB        7.9 MB        3.48 ms
+11:34:36        86 Young Garbage Collection        11.9 MB        8.0 MB        3.71 ms
+11:34:41        87 Young Garbage Collection        12.0 MB        8.0 MB        3.75 ms
+11:34:41        88 Old Garbage Collection           8.0 MB        8.0 MB        2.97 ms
+11:34:46        89 Young Garbage Collection        12.0 MB        8.1 MB        5.78 ms
+11:34:52        90 Young Garbage Collection        12.1 MB        8.1 MB        5.81 ms
+11:34:52        91 Old Garbage Collection           8.1 MB        8.1 MB        3.71 ms
+11:34:57        92 Young Garbage Collection        12.1 MB        8.2 MB        6.73 ms
+11:35:03        93 Young Garbage Collection        12.2 MB        8.2 MB        4.92 ms
+11:35:03        94 Old Garbage Collection           8.2 MB        8.2 MB        2.96 ms
+11:35:08        95 Young Garbage Collection        12.2 MB        8.2 MB        4.29 ms
+11:35:14        96 Young Garbage Collection        11.2 MB        8.3 MB        6.14 ms
+11:35:14        97 Old Garbage Collection           8.3 MB        8.3 MB        2.81 ms
+11:35:18        98 Young Garbage Collection        12.3 MB        8.3 MB        3.66 ms
+11:35:24        99 Young Garbage Collection        12.3 MB        8.3 MB        3.97 ms
+11:35:24       100 Old Garbage Collection           8.3 MB        8.3 MB        3.28 ms
+11:35:29       101 Young Garbage Collection        12.3 MB        8.5 MB        3.66 ms
+11:35:34       102 Young Garbage Collection        12.5 MB        8.5 MB        6.49 ms
+11:35:34       103 Old Garbage Collection           8.5 MB        8.5 MB        5.46 ms
+11:35:39       104 Young Garbage Collection        12.5 MB        8.6 MB        6.56 ms
+11:35:44       105 Young Garbage Collection        12.6 MB        8.6 MB        4.18 ms
+11:35:44       106 Old Garbage Collection           8.6 MB        8.6 MB        3.92 ms
+11:35:48       107 Young Garbage Collection        11.6 MB        8.7 MB        5.68 ms
+11:35:53       108 Young Garbage Collection        12.7 MB        8.6 MB        5.78 ms
+11:35:53       109 Old Garbage Collection           8.6 MB        8.6 MB        3.50 ms
+11:35:58       110 Young Garbage Collection        12.6 MB        8.6 MB        4.65 ms
+11:36:03       111 Young Garbage Collection        12.6 MB        8.8 MB        6.03 ms
+11:36:03       112 Old Garbage Collection           8.8 MB        8.8 MB        3.42 ms
+11:36:09       113 Young Garbage Collection        12.8 MB        8.8 MB        6.42 ms
+11:36:14       114 Young Garbage Collection        12.8 MB        8.8 MB        5.60 ms
+11:36:14       115 Old Garbage Collection           8.8 MB        8.8 MB        3.66 ms
+11:36:19       116 Young Garbage Collection        12.8 MB        8.9 MB        5.29 ms
+11:36:24       117 Young Garbage Collection        12.9 MB        9.0 MB        4.88 ms
+11:36:24       118 Old Garbage Collection           9.0 MB        9.0 MB        3.51 ms
+11:36:29       119 Young Garbage Collection        13.0 MB        8.9 MB        7.19 ms
+11:36:35       120 Young Garbage Collection        12.9 MB        9.0 MB        4.74 ms
+11:36:35       121 Old Garbage Collection           9.0 MB        9.0 MB        5.34 ms
+11:36:39       122 Young Garbage Collection        13.0 MB        9.1 MB        5.19 ms
+11:36:44       123 Young Garbage Collection        12.1 MB        9.1 MB        4.49 ms
+11:36:44       124 Old Garbage Collection           9.1 MB        9.1 MB        4.14 ms
+
+COLUMN 'Start', 'GC ID', 'Type', 'Heap Before GC', 'Heap After GC', 'Longest Pause'
+FORMAT none, none, missing:Unknown, none, none, none SELECT G.startTime, gcId,
+[Y|O].eventType.label, B.heapUsed, A.heapUsed, longestPause FROM GarbageCollection AS G,
+GCHeapSummary AS B, GCHeapSummary AS A, OldGarbageCollection AS O,
+YoungGarbageCollection AS Y WHERE B.when = 'Before GC' AND A.when = 'After GC' GROUP BY
+gcId ORDER BY G.startTime
+
+
+
+
+
+
+
+PS C:\Amit\Projects\memoryLeak\JFR> jfr view --verbose gc-cpu-time OOM.jfr
+
+GC CPU Time
+-----------
+
+GC User Time: 328 ms
+
+GC System Time: 15.6 ms
+
+GC Wall Clock Time: 409 ms
+
+Total Time: 4 m 54 s
+
+GC Count: 115
+
+COLUMN 'GC User Time', 'GC System Time', 'GC Wall Clock Time', 'Total Time',
+'GC Count' SELECT SUM(userTime), SUM(systemTime), SUM(realTime),
+DIFFERENCE(startTime), COUNT(*) FROM GCCPUTime GROUP BY startTime
+
+
+
+
+
+
+
+
+
+
+
+PS C:\Amit\Projects\memoryLeak\JFR> jfr view --verbose gc-pause-phases OOM.jfr
+
+                                                    GC Pause Phases
+
+Type                   Name                                      Average         P95     Longest       Count      Total
+(eventType.label)      (name)                                 (duration)  (duration)  (duration) (startTime) (duration)
+---------------------- ------------------------------------- ----------- ----------- ----------- ----------- ----------
+GC Phase Pause         GC Pause                                  4.97 ms     7.00 ms     7.19 ms          59     293 ms
+GC Phase Pause         Pause Remark                              4.07 ms     9.95 ms     8.62 ms          28     114 ms
+GC Phase Pause         Pause Cleanup                            0.115 ms    0.403 ms    0.350 ms          28    3.22 ms
+GC Phase Pause Level 1 Class Unloading                           3.57 ms     9.59 ms     8.21 ms          28     100 ms
+GC Phase Pause Level 1 Weak Processing                          0.165 ms    0.284 ms    0.258 ms          28    4.61 ms
+GC Phase Pause Level 1 Finalize Marking                        0.0899 ms    0.180 ms    0.169 ms          28    2.52 ms
+GC Phase Pause Level 1 Finalize Concurrent Mark Cleanup        0.0838 ms    0.363 ms    0.313 ms          28    2.35 ms
+GC Phase Pause Level 1 Reclaim Empty Regions                   0.0736 ms    0.473 ms    0.382 ms          28    2.06 ms
+GC Phase Pause Level 1 Update Remembered Set Tracking Bef...   0.0630 ms    0.211 ms    0.208 ms          28    1.77 ms
+GC Phase Pause Level 1 Reference Processing                    0.0412 ms    0.131 ms    0.115 ms          28    1.15 ms
+GC Phase Pause Level 1 Flush Task Caches                       0.0114 ms   0.0246 ms   0.0224 ms          28   0.319 ms
+GC Phase Pause Level 1 Update Remembered Set Tracking Aft...  0.00294 ms  0.00397 ms  0.00394 ms          23  0.0676 ms
+GC Phase Pause Level 1 Report Object Count                   0.000508 ms  0.00117 ms  0.00102 ms          28  0.0142 ms
+GC Phase Pause Level 2 G1 Complete Cleaning                      2.86 ms     5.78 ms     5.47 ms          28    80.1 ms
+GC Phase Pause Level 2 Purge Class Loader Data                  0.425 ms    0.696 ms    0.680 ms          28    11.9 ms
+GC Phase Pause Level 2 Unregister NMethods                      0.108 ms    0.292 ms    0.267 ms          28    3.02 ms
+GC Phase Pause Level 2 Purge Unlinked NMethods                 0.0846 ms     1.99 ms     1.37 ms          28    2.37 ms
+GC Phase Pause Level 2 ClassLoaderData                         0.0530 ms    0.290 ms    0.246 ms          28    1.48 ms
+GC Phase Pause Level 2 Notify Soft/WeakReferences              0.0162 ms   0.0693 ms   0.0822 ms          87    1.41 ms
+GC Phase Pause Level 2 Free Code Blobs                         0.0340 ms    0.523 ms    0.361 ms          28   0.951 ms
+GC Phase Pause Level 2 Notify PhantomReferences               0.00122 ms   0.0116 ms   0.0192 ms          87   0.106 ms
+GC Phase Pause Level 2 Trigger cleanups                       0.00116 ms  0.00835 ms  0.00806 ms          28  0.0325 ms
+GC Phase Pause Level 2 Notify and keep alive finalizable     0.000132 ms 0.000271 ms 0.000273 ms          87  0.0116 ms
+
+COLUMN 'Type', 'Name', 'Average', 'P95', 'Longest', 'Count', 'Total' SELECT eventType.label AS T, name,
+AVERAGE(duration), P95(duration), MAXIMUM(duration), COUNT(*), SUM(duration) AS S FROM GCPhasePause, GCPhasePauseLevel1,
+GCPhasePauseLevel2, GCPhasePauseLevel3, GCPhasePauseLevel4 GROUP BY name ORDER BY T ASC, S
+
+
+
+
+
+
+
+
+PS C:\Amit\Projects\memoryLeak\JFR> jfr view --verbose gc-pauses OOM.jfr
+
+GC Pauses
+---------
+
+Total Pause Time: 410 ms
+
+Number of Pauses: 115
+
+Minimum Pause Time: 0.0198 ms
+
+Median Pause Time: 3.86 ms
+
+Average Pause Time: 3.57 ms
+
+P90 Pause Time: 6.28 ms
+
+P95 Pause Time: 6.76 ms
+
+P99 Pause Time: 9.82 ms
+
+P99.9% Pause Time: 8.62 ms
+
+Maximum Pause Time: 8.62 ms
+
+COLUMN 'Total Pause Time', 'Number of Pauses', 'Minimum Pause Time',
+'Median Pause Time', 'Average Pause Time', 'P90 Pause Time', 'P95 Pause Time',
+'P99 Pause Time', 'P99.9% Pause Time', 'Maximum Pause Time' SELECT SUM(duration)
+, COUNT(duration), MINIMUM(duration), MEDIAN(duration), AVERAGE(duration),
+P90(duration), P95(duration), P99(duration), P999(duration), MAXIMUM(duration)
+FROM GCPhasePause GROUP BY startTime
+
+
+
+
+
+
+
+
+
+PS C:\Amit\Projects\memoryLeak\JFR> jfr view --verbose gc-references OOM.jfr
+
+                                  GC References
+
+Time           GC ID  Soft Ref.  Weak Ref.  Phantom Ref.  Final Ref.  Total Count
+(startTime)   (gcId)    (count)    (count)       (count)     (count)      (count)
+------------ ------- ---------- ---------- ------------- ----------- ------------
+11:31:50          38          0         10             9           0           19
+11:31:52          39          0         17             4           0           21
+11:31:52          40          0          0             0           0            0
+11:31:54          41          0          6             1           0            7
+11:31:58          42          0          6             1           0            7
+11:32:04          43          0          2             1           0            3
+11:32:04          44         89          4             0           0           93
+11:32:09          45          6          7             0           0           13
+11:32:14          46          0          2             0           0            2
+11:32:20          47          0          0             0           0            0
+11:32:20          48          1          6             0           0            7
+11:32:25          49          0         35             0           0           35
+11:32:29          50          0          6             0           0            6
+11:32:34          51         17          6             0           0           23
+11:32:34          52          0          0             0           0            0
+11:32:39          53          0          5             0           0            5
+11:32:45          54          2         28             0           0           30
+11:32:45          55          0          0             0           0            0
+11:32:50          56          0         28             0           0           28
+11:32:55          57          0         28             0           0           28
+11:32:55          58          0          0             0           0            0
+11:33:01          59          0          3             0           0            3
+11:33:06          60          0          0             0           0            0
+11:33:06          61          0          0             0           0            0
+11:33:11          62          0          0             0           0            0
+11:33:17          63          0          2             0           0            2
+11:33:17          64          0          0             0           0            0
+11:33:22          65          0          0             0           0            0
+11:33:28          66          0          1             0           0            1
+11:33:28          67          0          0             0           0            0
+11:33:33          68          0          1             0           0            1
+11:33:39          69          0          2             0           0            2
+11:33:39          70          0          0             0           0            0
+11:33:44          71          0          2             0           0            2
+11:33:49          72          0          2             0           0            2
+11:33:49          73          0          0             0           0            0
+11:33:53          74          0          1             0           0            1
+11:33:59          75          0          2             0           0            2
+11:33:59          76          0          0             0           0            0
+11:34:04          77          0          1             0           0            1
+11:34:10          78          0          0             0           0            0
+11:34:10          79          0          0             0           0            0
+11:34:14          80          0          0             0           0            0
+11:34:19          81          0          0             0           0            0
+11:34:20          82          0          0             0           0            0
+11:34:24          83          0          0             1           0            1
+11:34:30          84          0          0             0           0            0
+11:34:31          85          0          0             0           0            0
+11:34:36          86          0          0             0           0            0
+11:34:41          87          0          0             0           0            0
+11:34:41          88          0          0             0           0            0
+11:34:46          89          0          0             0           0            0
+11:34:52          90          0          0             0           0            0
+11:34:52          91          0          0             0           0            0
+11:34:57          92          0          0             0           0            0
+11:35:03          93          0          0             0           0            0
+11:35:03          94          0          0             0           0            0
+11:35:08          95          0          0             0           0            0
+11:35:14          96          0          0             0           0            0
+11:35:14          97          0          0             0           0            0
+11:35:18          98          0          0             0           0            0
+11:35:24          99          0          0             0           0            0
+11:35:24         100          0          0             0           0            0
+11:35:29         101          0          0             0           0            0
+11:35:34         102          0          2             0           0            2
+11:35:34         103          0          0             0           0            0
+11:35:39         104          0          2             0           0            2
+11:35:44         105         12          0             0           0           12
+11:35:44         106          0          0             0           0            0
+11:35:48         107          2          3             0           0            5
+11:35:53         108          2          0             0           0            2
+11:35:53         109          0          0             0           0            0
+11:35:58         110          1          2             0           0            3
+11:36:03         111          2          1             0           0            3
+11:36:03         112          0          0             0           0            0
+11:36:09         113          1          3             0           0            4
+11:36:14         114          2          2             1           0            5
+11:36:14         115          0          0             0           0            0
+11:36:19         116          2          2             1           0            5
+11:36:24         117          2          0             1           0            3
+11:36:24         118          0          0             0           0            0
+11:36:29         119          0          0             0           0            0
+11:36:35         120          0          5             0           0            5
+11:36:35         121          4          2             0           0            6
+11:36:39         122          0         30             0           0           30
+11:36:44         123         15         28             0           0           43
+11:36:44         124          1          0             0           0            1
+
+COLUMN 'Time', 'GC ID', 'Soft Ref.', 'Weak Ref.', 'Phantom Ref.', 'Final Ref.',
+'Total Count' SELECT G.startTime, G.gcId, S.count, W.count, P.count, F.count,
+SUM(G.count) FROM GCReferenceStatistics AS S, GCReferenceStatistics AS W,
+GCReferenceStatistics AS P, GCReferenceStatistics AS F, GCReferenceStatistics AS G
+WHERE S.type = 'Soft reference' AND W.type = 'Weak reference' AND P.type =
+'Phantom reference' AND F.type = 'Final reference' GROUP BY gcId ORDER BY G.gcId
+ASC
+
+
+
+
+
+
+PS C:\Amit\Projects\memoryLeak\JFR> jfr view --verbose heap-configuration OOM.jfr
+
+Heap Configuration
+------------------
+
+Initial Heap Size: 10.0 MB
+
+Minimum Heap Size: 10.0 MB
+
+Maximum Heap Size: 16.0 MB
+
+If Compressed Oops Are Used: true
+
+Compressed Oops Mode: 32-bit
+
+SELECT LAST(initialSize), LAST(minSize), LAST(maxSize), LAST(usesCompressedOops)
+, LAST(compressedOopsMode) FROM GCHeapConfiguration GROUP BY startTime
+
+
+
+
+
+
+
+
+
+PS C:\Amit\Projects\memoryLeak\JFR> jfr view --verbose vm-operations OOM.jfr
+
+                                     VM Operations
+
+VM Operation              Average Duration Longest Duration       Count Total Duration
+(operation)                     (duration)       (duration) (startTime)     (duration)
+------------------------- ---------------- ---------------- ----------- --------------
+G1CollectForAllocation             5.02 ms          7.24 ms          59         296 ms
+G1PauseRemark                      4.10 ms          8.64 ms          28         115 ms
+RedefineClasses                    16.1 ms          16.1 ms           1        16.1 ms
+G1PauseCleanup                    0.132 ms         0.369 ms          28        3.69 ms
+PrintThreads                      0.953 ms          1.02 ms           2        1.91 ms
+ClassLoaderStatsOperation         0.502 ms         0.563 ms           2        1.00 ms
+Cleanup                        0.000911 ms        0.0105 ms          54      0.0492 ms
+HandshakeAllThreads              0.0292 ms        0.0292 ms           1      0.0292 ms
+JFROldObject                     0.0137 ms        0.0137 ms           1      0.0137 ms
+FindDeadlocks                   0.00663 ms       0.00794 ms           2      0.0133 ms
+RendezvousGCThreads             0.00101 ms       0.00101 ms           1     0.00101 ms
+
+COLUMN 'VM Operation', 'Average Duration', 'Longest Duration', 'Count',
+'Total Duration' SELECT operation, AVERAGE(duration), MAXIMUM(duration), COUNT(*),
+SUM(duration) FROM jdk.ExecuteVMOperation GROUP BY operation
+
+
+
+
+
+
+
+
+
+
+
+PS C:\Amit\Projects\memoryLeak\JFR> jfr view --verbose cpu-load OOM.jfr
+
+CPU Load Statistics
+-------------------
+
+JVM User (Minimum): 0.00%
+
+JVM User (Average): 0.89%
+
+JVM User (Maximum): 64.77%
+
+JVM System (Minimum): 0.00%
+
+JVM System (Average): 0.81%
+
+JVM System (Maximum): 25.91%
+
+Machine Total (Minimum): 1.20%
+
+Machine Total (Average): 9.90%
+
+Machine Total (Maximum): 100.00%
+
+COLUMN 'JVM User (Minimum)', 'JVM User (Average)', 'JVM User (Maximum)',
+'JVM System (Minimum)', 'JVM System (Average)', 'JVM System (Maximum)',
+'Machine Total (Minimum)', 'Machine Total (Average)', 'Machine Total (Maximum)'
+SELECT MINIMUM(jvmUser), AVERAGE(jvmUser), MAXIMUM(jvmUser), MINIMUM(jvmSystem),
+AVERAGE(jvmSystem), MAXIMUM(jvmSystem), MINIMUM(machineTotal),
+AVERAGE(machineTotal), MAXIMUM(machineTotal) FROM CPULoad GROUP BY startTime
+
+
+
+
+
+
+
+
+PS C:\Amit\Projects\memoryLeak\JFR> jfr view --verbose system-information OOM.jfr
+
+System Information
+------------------
+
+Total Physical Memory Size: 7.7 GB
+
+OS Version: OS:  Windows 11 , 64 bit Build 22621 (10.0.22621.3958) OS uptime: 1
+             days 0:50 hours
+
+CPU Type: Intel (null) (HT) SSE SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 Core Intel64
+
+Number of Cores: 2
+
+Number of Hardware Threads: 4
+
+Number of Sockets: 1
+
+CPU Description: Brand: 11th Gen Intel(R) Core(TM) i3-1115G4 @ 3.00GHz, Vendor:
+                  GenuineIntel Family: <unknown> (0x6), Model: <unknown> (0x8c)
+                 , Stepping: 0x1 Ext. family: 0x0, Ext. model: 0x8, Type: 0x0,
+                 Signature: 0x000806c1 Features: ebx: 0x03100800, ecx: 0x7ffafb
+                 bf, edx: 0xbfebfbff Ext. features: eax: 0x00000000, ebx: 0x000
+                 00000, ecx: 0x00000121, edx: 0x2c100800 Supports: On-Chip FPU,
+                  Virtual Mode Extensions, Debugging Extensions, Page Size Exte
+                 nsions, Time Stamp Counter, Model Specific Registers, Physical
+                  Address Extension, Machine Check Exceptions, CMPXCHG8B Instru
+                 ction, On-Chip APIC, Fast System Call, Memory Type Range Regis
+                 ters, Page Global Enable, Machine Check Architecture, Conditio
+                 nal Mov Instruction, Page Attribute Table, 36-bit Page Size Ex
+                 tension, CLFLUSH Instruction, Debug Trace Store feature, ACPI
+                 registers in MSR space, Intel Architecture MMX Technology, Fas
+                 t Float Point Save and Restore, Streaming SIMD extensions, Str
+                 eaming SIMD extensions 2, Self-Snoop, Hyper Threading, Thermal
+                  Monitor, Streaming SIMD Extensions 3, PCLMULQDQ, 64-bit DS Ar
+                 ea, MONITOR/MWAIT instructions, CPL Qualified Debug Store, Vir
+                 tual Machine Extensions, Enhanced Intel SpeedStep technology,
+                 Thermal Monitor 2, Supplemental Streaming SIMD Extensions 3, F
+                 used Multiply-Add, CMPXCHG16B, xTPR Update Control, Perfmon an
+                 d Debug Capability, Process-context identifiers, Streaming SIM
+                 D extensions 4.1, Streaming SIMD extensions 4.2, x2APIC, MOVBE
+                 , Popcount instruction, TSC-Deadline, AESNI, XSAVE, OSXSAVE, A
+                 VX, F16C, LAHF/SAHF instruction support, Advanced Bit Manipula
+                 tions: LZCNT, SYSCALL/SYSRET, Execute Disable Bit, RDTSCP, Int
+                 el 64 Architecture, Invariant TSC
+
+COLUMN 'Total Physical Memory Size', 'OS Version', 'CPU Type', 'Number of Cores'
+, 'Number of Hardware Threads', 'Number of Sockets', 'CPU Description' SELECT
+LAST(totalSize), LAST(osVersion), LAST(cpu), LAST(cores), LAST(hwThreads),
+LAST(sockets), LAST(description) FROM CPUInformation, PhysicalMemory,
+OSInformation GROUP BY startTime
+
+
+
+
+
+PS C:\Amit\Projects\memoryLeak\JFR> jfr view --verbose allocation-by-class OOM.jfr
+
+                                           Allocation by Class
+
+Object Type                                                                          Allocation Pressure
+(objectClass)                                                                                   (weight)
+------------------------------------------------------------------------------------ -------------------
+java.lang.Object[]                                                                                20.07%
+java.util.ArrayList                                                                               17.84%
+java.lang.Class                                                                                    8.55%
+java.util.TreeMap$Entry                                                                            6.52%
+java.util.TreeMap$KeyIterator                                                                      4.62%
+int[]                                                                                              4.43%
+byte[]                                                                                             3.98%
+java.util.TreeMap                                                                                  3.09%
+java.util.LinkedHashMap$Entry                                                                      2.94%
+java.io.SerialCallbackContext                                                                      2.61%
+char[]                                                                                             2.57%
+sun.nio.ch.SocketOptionRegistry$RegistryKey                                                        2.11%
+java.util.Collections$UnmodifiableList                                                             2.09%
+java.util.Arrays$ArrayList                                                                         1.89%
+javax.management.openmbean.CompositeDataSupport                                                    1.87%
+java.util.HashMap$Node                                                                             1.82%
+java.util.TreeMap$EntrySet                                                                         1.71%
+java.util.Collections$UnmodifiableRandomAccessList                                                 1.65%
+java.util.HashMap$Node[]                                                                           1.05%
+java.lang.Object                                                                                   0.99%
+java.util.TreeMap$KeySet                                                                           0.97%
+java.io.ObjectStreamClass                                                                          0.80%
+java.util.HashMap                                                                                  0.46%
+java.lang.String                                                                                   0.41%
+java.lang.Long                                                                                     0.40%
+
+COLUMN 'Object Type', 'Allocation Pressure' FORMAT none, normalized SELECT objectClass AS O, SUM(weight)
+AS W FROM ObjectAllocationSample GROUP BY O ORDER BY W DESC LIMIT 25
+
+
+
+
+
+
+
+
+
+
+PS C:\Amit\Projects\memoryLeak\JFR> jfr view --verbose allocation-by-site OOM.jfr
+
+                                                   Allocation by Site
+
+Method                                                                                              Allocation Pressure
+(stackTrace.topFrame)                                                                                          (weight)
+--------------------------------------------------------------------------------------------------- -------------------
+com.sun.jmx.remote.internal.ArrayNotificationBuffer.fetchNotifications(...)                                      17.79%
+java.io.ObjectOutputStream.defaultWriteFields(Object, ObjectStreamClass)                                         12.87%
+jdk.jfr.internal.JVMUpcalls.onRetransform(long, boolean, boolean, Class, byte[])                                  8.53%
+java.util.TreeMap.keyIterator()                                                                                   4.62%
+java.io.ObjectOutputStream$HandleTable.growEntries()                                                              4.50%
+java.util.TreeMap.addEntry(Object, Object, TreeMap$Entry, boolean)                                                3.59%
+javax.management.openmbean.CompositeDataSupport.makeMap(String[], Object[])                                       3.09%
+com.sun.jmx.mbeanserver.DefaultMXBeanMappingFactory$TabularMapping.toNonNullOpenValue(Object)                     3.03%
+java.io.ObjectInputStream$BlockDataInputStream.<init>(ObjectInputStream, InputStream)                             2.99%
+java.util.LinkedHashMap.newNode(int, Object, Object, HashMap$Node)                                                2.94%
+java.util.TreeMap.addEntryToEmptyMap(Object, Object)                                                              2.93%
+java.io.ObjectOutputStream.writeSerialData(Object, ObjectStreamClass)                                             2.61%
+sun.nio.ch.SocketOptionRegistry.findOption(SocketOption, ProtocolFamily)                                          2.11%
+java.util.Collections$UnmodifiableRandomAccessList.writeReplace()                                                 2.09%
+java.util.Arrays.asList(Object[])                                                                                 1.89%
+java.io.ObjectOutputStream$BlockDataOutputStream.<init>(OutputStream)                                             1.83%
+java.util.HashMap.newNode(int, Object, Object, HashMap$Node)                                                      1.82%
+java.util.TreeMap.entrySet()                                                                                      1.71%
+java.io.ObjectOutputStream$HandleTable.growSpine()                                                                1.67%
+java.util.Collections.unmodifiableList(List)                                                                      1.65%
+javax.management.openmbean.CompositeDataSupport.getAll(String[])                                                  1.58%
+java.util.HashMap.resize()                                                                                        1.05%
+java.util.TreeMap.navigableKeySet()                                                                               0.97%
+java.io.ObjectInputStream$HandleTable.<init>(int)                                                                 0.90%
+org.example.MemoryLeak.main(String[])                                                                             0.89%
+
+COLUMN 'Method', 'Allocation Pressure' FORMAT none, normalized SELECT stackTrace.topFrame AS S, SUM(weight) AS W FROM
+ObjectAllocationSample GROUP BY S ORDER BY W DESC LIMIT 25
+
+
+
+
+
+
+
+PS C:\Amit\Projects\memoryLeak\JFR> jfr view --verbose allocation-by-thread OOM.jfr
+
+                              Allocation by Thread
+
+Thread                                                      Allocation Pressure
+(eventThread)                                                          (weight)
+----------------------------------------------------------- -------------------
+RMI TCP Connection(7)-192.168.1.105                                      51.55%
+RMI TCP Connection(1)-192.168.1.105                                      36.74%
+RMI TCP Connection(8)-192.168.1.105                                       7.08%
+RMI TCP Connection(6)-192.168.1.105                                       2.11%
+main                                                                      1.46%
+Notification Thread                                                       0.92%
+JMX server connection timeout 28                                          0.07%
+RMI TCP Accept-0                                                          0.06%
+JFR Periodic Tasks                                                        0.02%
+C1 CompilerThread0                                                        0.01%
+Common-Cleaner                                                            0.00%
+C2 CompilerThread0                                                        0.00%
+
+COLUMN 'Thread', 'Allocation Pressure' FORMAT none, normalized SELECT
+eventThread AS T, SUM(weight) AS W FROM ObjectAllocationSample GROUP BY T ORDER
+BY W DESC LIMIT 25
+
+
+
+
+
+
+
+
+
+
+
+PS C:\Amit\Projects\memoryLeak\JFR> jfr view --verbose memory-leaks-by-class OOM.jfr
+
+                                 Memory Leak Candidates by Class
+
+Alloc. Time      Object Class                                     Object Age           Heap Usage
+(allocationTime) (object.type)                                   (objectAge) (lastKnownHeapUsage)
+---------------- ----------------------------------------------- ----------- --------------------
+11:31:51         java.util.concurrent.ConcurrentHashMap$Node[]      4 m 59 s               6.6 MB
+11:32:04         java.util.TreeMap$KeySet                           4 m 46 s               6.9 MB
+11:32:04         java.util.TreeMap$EntrySet                         4 m 46 s               6.9 MB
+11:32:09         java.util.TreeMap                                  4 m 41 s               6.9 MB
+11:32:20         javax.management.openmbean.CompositeDataSupport    4 m 30 s               6.8 MB
+11:32:20         java.lang.Long                                     4 m 30 s               6.8 MB
+11:32:29         java.lang.Object                                   4 m 21 s               6.7 MB
+11:32:55         java.util.LinkedHashMap$Entry                      3 m 54 s               7.4 MB
+11:35:34         java.util.TreeMap$Entry                            1 m 16 s               8.5 MB
+11:35:44         java.lang.Class                                     1 m 6 s               8.8 MB
+11:35:48         java.util.HashMap$Node                              1 m 2 s               8.8 MB
+11:36:12         byte[]                                               37.5 s               8.8 MB
+11:36:24         javax.management.Notification                        25.7 s               9.2 MB
+
+COLUMN 'Alloc. Time', 'Object Class', 'Object Age', 'Heap Usage' SELECT LAST_BATCH(allocationTime)
+, LAST_BATCH(object.type), LAST_BATCH(objectAge), LAST_BATCH(lastKnownHeapUsage) FROM
+OldObjectSample GROUP BY object.type ORDER BY allocationTime
+
+
+
+
+
+
+
+
+
+
+
+
+PS C:\Amit\Projects\memoryLeak\JFR> jfr view --verbose memory-leaks-by-site OOM.jfr
+
+                                        Memory Leak Candidates by Site
+
+Alloc. Time      Application Method                                            Object Age           Heap Usage
+(allocationTime) (stackTrace.topApplicationFrame)                             (objectAge) (lastKnownHeapUsage)
+---------------- ------------------------------------------------------------ ----------- --------------------
+11:35:39         sun.reflect.misc.Trampoline.invoke(Method, Object, Object[])    1 m 11 s               8.6 MB
+11:35:48         org.example.MemoryLeak.main(String[])                            1 m 2 s               8.8 MB
+11:36:24         N/A                                                               25.7 s               9.2 MB
+
+COLUMN 'Alloc. Time', 'Application Method', 'Object Age', 'Heap Usage' SELECT LAST_BATCH(allocationTime),
+LAST_BATCH(stackTrace.topApplicationFrame), LAST_BATCH(objectAge), LAST_BATCH(lastKnownHeapUsage) FROM
+OldObjectSample GROUP BY stackTrace.topApplicationFrame ORDER BY allocationTime
+
+
+
+
+
+
+
+
