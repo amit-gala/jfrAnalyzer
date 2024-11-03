@@ -10,6 +10,8 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.nio.file.Paths;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,16 +21,24 @@ public class MemoryLeakCandidate {
     public void getMemoryLeakCandidateByClass() throws IOException {
         try (RecordingFile rec = new RecordingFile(Paths.get("C:\\Amit\\Projects\\memoryLeak\\JFR\\OOM.jfr"))) {
             Map<String, MemoryLeakInfo> leakCandidates = new HashMap<>();
+            Map<String, MemoryLeakInfo> leakCandidatesByMethod = new HashMap<>();
             while (rec.hasMoreEvents()) {
 
                 RecordedEvent event = rec.readEvent();
 
                 //Events for hot methods
                 if ("jdk.OldObjectSample".equals(event.getEventType().getName())) {
+//                    event.toString();
                     String className = "";
-                    String startTime = event.getStartTime().toString().substring(0, 19);
+                    String fullyQualifiedMethodName = "";
+                    String methodType = "";
+                    String methodName = "";
+//                    String startTime = event.getStartTime().toString().substring(0, 19);
+
+                    String allocationTime = OffsetDateTime.ofInstant(event.getInstant("allocationTime"), ZoneOffset.of("+05:30")).toString().substring(0, 19);
                     String objectAge = new BigDecimal(event.getDuration("objectAge").toSeconds() / 60.0, new MathContext(3, RoundingMode.HALF_EVEN)).toPlainString().concat(" m");
 
+                    // Get the object class name
                     RecordedObject recordedObject = event.getValue("object");
                     RecordedClass clazz = recordedObject.getClass("type");
                     if (clazz != null) {
@@ -39,20 +49,44 @@ public class MemoryLeakCandidate {
                         }
                     }
 
+                    // Get the method name
+                    methodType = event.getStackTrace().getFrames().getLast().getMethod().getType().getName();
+                    methodName = event.getStackTrace().getFrames().getLast().getMethod().getName();
+                    fullyQualifiedMethodName = methodType + "." + methodName;
+
                     String lastKnownHeapUsage = new BigDecimal(event.getLong("lastKnownHeapUsage") / (1024.0 * 1024.0), new MathContext(3, RoundingMode.HALF_EVEN)).toPlainString().concat(" MB");
 
                     // Aggregate by object type
                     leakCandidates.computeIfAbsent(className, k -> new MemoryLeakInfo())
-                            .update(startTime, className, objectAge, lastKnownHeapUsage);
+                            .update(allocationTime, className, objectAge, lastKnownHeapUsage);
+
+                    leakCandidatesByMethod.computeIfAbsent(fullyQualifiedMethodName, k -> new MemoryLeakInfo())
+                            .update(allocationTime, fullyQualifiedMethodName, objectAge, lastKnownHeapUsage);
                 }
             }
             // Print out results similar to "Memory Leak Candidates by Class"
-            System.out.println("Memory Leak Candidates by Class:");
-            System.out.printf("%-20s %-70s %-15s %-15s%n", "Alloc. Time", "Object Class", "Object Age", "Heap Usage");
-            for (MemoryLeakInfo info : leakCandidates.values().stream().sorted().toList()) {
-                System.out.printf("%-20s %-70s %-15s %-15s%n",
-                        info.allocationTime, info.objectClass, info.objectAge, info.heapUsage);
-            }
+            printMemLeakByClass(leakCandidates);
+            System.out.println();
+            System.out.println();
+            printMemLeakByMethod(leakCandidatesByMethod);
+        }
+    }
+
+    private static void printMemLeakByClass(Map<String, MemoryLeakInfo> leakCandidates) {
+        System.out.println("Memory Leak Candidates by Class:");
+        System.out.printf("%-20s %-70s %-15s %-15s%n", "Alloc. Time", "Object Class", "Object Age", "Heap Usage");
+        for (MemoryLeakInfo info : leakCandidates.values().stream().sorted().toList()) {
+            System.out.printf("%-20s %-70s %-15s %-15s%n",
+                    info.allocationTime, info.objectClass, info.objectAge, info.heapUsage);
+        }
+    }
+
+    private static void printMemLeakByMethod(Map<String, MemoryLeakInfo> leakCandidates) {
+        System.out.println("Memory Leak Candidates by Method:");
+        System.out.printf("%-20s %-70s %-15s %-15s%n", "Alloc. Time", "Application Method", "Object Age", "Heap Usage");
+        for (MemoryLeakInfo info : leakCandidates.values().stream().sorted().toList()) {
+            System.out.printf("%-20s %-70s %-15s %-15s%n",
+                    info.allocationTime, info.objectClass, info.objectAge, info.heapUsage);
         }
     }
 
