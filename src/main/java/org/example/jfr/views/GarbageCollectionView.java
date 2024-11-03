@@ -19,14 +19,18 @@ public class GarbageCollectionView {
         try (
                 RecordingFile rec = new RecordingFile(Paths.get("C:\\Amit\\Projects\\memoryLeak\\JFR\\OOM.jfr"))) {
             Map<Long, GCInfo> gcInfoMap = new HashMap<>();
+            Map<Instant, GCHeapConfiguration> gcHeapConfigurationMap = new HashMap<>();
             String beforeOrAfter;
             long gcId;
             String gcType;
-            long heapBeforeGC;
-            long heapAfterGC;
+            Long heapBeforeGC;
+            Long heapAfterGC;
             long longestPause;
-            long heapUsed;
+            Long heapUsed;
             Instant startTime;
+            long initialSize;
+            long minSize;
+            long maxSize;
 
             while (rec.hasMoreEvents()) {
 
@@ -57,6 +61,14 @@ public class GarbageCollectionView {
                         }
                         break;
 
+                    case "jdk.GCHeapConfiguration":
+                        startTime = event.getStartTime();
+                        initialSize = event.getLong("initialSize");
+                        minSize = event.getLong("minSize");
+                        maxSize = event.getLong("maxSize");
+                        gcHeapConfigurationMap.computeIfAbsent(startTime, k -> new GCHeapConfiguration())
+                                .update(startTime, initialSize, minSize, maxSize);
+                        break;
                     default:
                         break;
 
@@ -65,12 +77,24 @@ public class GarbageCollectionView {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSS")
                     .withZone(ZoneId.systemDefault());
             System.out.println("Garbage Collections");
-            System.out.printf("%12s\t%5s\t%5s\t%16s\t%16s\t%s\n","Start","GC ID","Type","Heap Before GC","Heap After GC","Longest Pause");
+            System.out.printf("%12s\t%5s\t%5s\t%16s\t%16s\t%s\n", "Start", "GC ID", "Type", "Heap Before GC", "Heap After GC", "Longest Pause");
 
-            gcInfoMap.keySet().stream().map(gcInfoMap::get).forEach( gc -> {
-                System.out.printf("%12s\t%5d\t%5s\t%10d bytes\t%10d bytes\t%d ns\n",
-                        formatter.format(gc.getStartTime()), gc.getGcID(), gc.getGcType(), gc.getHeapBeforeGC(), gc.getHeapAfterGC(), gc.getLongestPause());
+            gcInfoMap.keySet().stream().map(gcInfoMap::get).forEach(gc -> {
+                System.out.printf("%12s\t%5d\t%5s\t%13d MB\t%13d MB\t%d ms\n",
+                        formatter.format(gc.getStartTime()), gc.getGcID(), gc.getGcType(), gc.getHeapBeforeGC()/(1024 * 1024), gc.getHeapAfterGC()/(1024 * 1024), gc.getLongestPause()/1_000_000);
             });
+
+
+            System.out.println();
+            System.out.println();
+            System.out.println("Heap Configuration");
+            gcHeapConfigurationMap.keySet().stream().limit(1).map(gcHeapConfigurationMap::get).forEach(g ->
+                    System.out.printf("Initial Heap Size: %d MB\n" +
+                            "\n" +
+                            "Minimum Heap Size: %d MB\n" +
+                            "\n" +
+                            "Maximum Heap Size: %d MB", g.getInitialSize()/(1024 * 1024), g.getMinSize()/(1024 * 1024), g.getMaxSize()/(1024 * 1024)));
+
         }
 
     }
@@ -138,6 +162,36 @@ public class GarbageCollectionView {
 
         public void setLongestPause(Long longestPause) {
             this.longestPause = longestPause;
+        }
+    }
+
+    private static class GCHeapConfiguration {
+        long initialSize;
+        long minSize;
+        long maxSize;
+        Instant startTime;
+
+        public void update(Instant startTime, long initialSize, long minSize, long maxSize) {
+            this.initialSize = initialSize;
+            this.minSize = minSize;
+            this.maxSize = maxSize;
+            this.startTime = startTime;
+        }
+
+        public long getInitialSize() {
+            return initialSize;
+        }
+
+        public long getMinSize() {
+            return minSize;
+        }
+
+        public long getMaxSize() {
+            return maxSize;
+        }
+
+        public Instant getStartTime() {
+            return startTime;
         }
     }
 }
